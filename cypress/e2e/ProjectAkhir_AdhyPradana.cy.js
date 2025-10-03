@@ -5,64 +5,64 @@ const dashboard = require('../pages/dashboard')
 describe('Project Akhir OrangeHRM Adhy Pradana', () => {
 
   it('TC01 - Login dengan username dan password yang valid', () => {
-  cy.fixture('user').then((userData) => {
-    cy.clearCookies()
-    cy.clearLocalStorage()
-    loginPages.visit()
-    cy.get('input[placeholder="Username"]', { timeout: 10000 }).should('be.visible')
-    loginPages.login(userData.validUser.username, userData.validUser.password)
-    cy.url().should('include', '/dashboard/index')
+    cy.fixture('user').then((userData) => {
+      cy.clearCookies()
+      cy.clearLocalStorage()
+      loginPages.visit()
+      cy.get('input[placeholder="Username"]', { timeout: 10000 }).should('be.visible')
+      loginPages.login(userData.validUser.username, userData.validUser.password)
+      cy.url().should('include', '/dashboard/index')
+    })
   })
-})
 
   it('TC02 - Login dengan username yang salah', () => {
-  cy.fixture('user').then((userData) => {
+    cy.fixture('user').then((userData) => {
+      cy.clearCookies()
+      cy.clearLocalStorage()
+      loginPages.visit()
+      loginPages.login(userData.invalidUser.username, userData.validUser.password)
+      loginPages.getErrorMessage().should('contain', 'Invalid credentials')
+    })
+  })
+
+  it('TC03 - Login dengan password yang salah', () => {
+    cy.fixture('user').then((userData) => {
+      cy.clearCookies()
+      cy.clearLocalStorage()
+      loginPages.visit()
+      loginPages.login(userData.validUser.username, userData.invalidUser.password)
+      loginPages.getErrorMessage().should('contain', 'Invalid credentials')
+    })
+  })
+
+  it('TC04 - Login dengan semua field kosong', () => {
     cy.clearCookies()
     cy.clearLocalStorage()
     loginPages.visit()
-    loginPages.login(userData.invalidUser.username, userData.validUser.password)
-    loginPages.getErrorMessage().should('contain', 'Invalid credentials')
+    cy.get('input[placeholder="Username"]').should('be.visible')
+    loginPages.getLoginButton().click()
+    loginPages.getEmptyFieldError().should('contain', 'Required')
   })
-})
 
-it('TC03 - Login dengan password yang salah', () => {
-  cy.fixture('user').then((userData) => {
-    cy.clearCookies()
-    cy.clearLocalStorage()
-    loginPages.visit()
-    loginPages.login(userData.validUser.username, userData.invalidUser.password)
-    loginPages.getErrorMessage().should('contain', 'Invalid credentials')
+  it('TC05 - Login dengan username input spesial karakter', () => {
+    cy.fixture('user').then((userData) => {
+      cy.clearCookies()
+      cy.clearLocalStorage()
+      loginPages.visit()
+      loginPages.login(userData.specialCharUser.username, userData.specialCharUser.password)
+      loginPages.getErrorMessage().should('exist')
+    })
   })
-})
 
-it('TC04 - Login dengan semua field kosong', () => {
-  cy.clearCookies()
-  cy.clearLocalStorage()
-  loginPages.visit()
-  cy.get('input[placeholder="Username"]').should('be.visible')
-  loginPages.getLoginButton().click()
-  loginPages.getEmptyFieldError().should('contain', 'Required')
-})
-
-it('TC05 - Login dengan username input spesial karakter', () => {
-  cy.fixture('user').then((userData) => {
-    cy.clearCookies()
-    cy.clearLocalStorage()
-    loginPages.visit()
-    loginPages.login(userData.specialCharUser.username, userData.specialCharUser.password)
-    loginPages.getErrorMessage().should('exist')
+  it('TC06 - Login dengan password yang invalid', () => {
+    cy.fixture('user').then((userData) => {
+      cy.clearCookies()
+      cy.clearLocalStorage()
+      loginPages.visit()
+      loginPages.login(userData.longPasswordUser.username, userData.longPasswordUser.password)
+      loginPages.getErrorMessage().should('contain', 'Invalid credentials')
+    })
   })
-})
-
-it('TC06 - Login dengan password yang invalid', () => {
-  cy.fixture('user').then((userData) => {
-    cy.clearCookies()
-    cy.clearLocalStorage()
-    loginPages.visit()
-    loginPages.login(userData.longPasswordUser.username, userData.longPasswordUser.password)
-    loginPages.getErrorMessage().should('contain', 'Invalid credentials')
-  })
-})
 
 
   it('TC07 - Forgot password dengan username valid', () => {
