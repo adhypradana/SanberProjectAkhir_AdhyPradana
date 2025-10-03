@@ -18,3 +18,14 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+Cypress.on('uncaught:exception', (err, runnable) => {
+  if (
+    err.message.includes('Request failed with status code 304') ||
+    err.message.includes('Request failed with status code 401') ||
+    err.message.includes('Cannot read properties of undefined')
+  ) {
+    return false
+  }
+  return true
+})

@@ -1,0 +1,22 @@
+{
+  "validUser": {
+    "username": "Admin",
+    "password": "admin123"
+  },
+  "invalidUser": {
+    "username": "UserSalah",
+    "password": "PasswordSalah"
+  },
+  "emptyFields": {
+    "username": "",
+    "password": ""
+  },
+  "specialCharUser": {
+    "username": "admin!@#",
+    "password": "admin123"
+  },
+  "longPasswordUser": {
+    "username": "Admin",
+    "password": "Passwordnyadipanjangin1234567890"
+  }
+}
